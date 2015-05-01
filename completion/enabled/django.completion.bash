@@ -1,0 +1,1 @@
+../available/django.completion.bash

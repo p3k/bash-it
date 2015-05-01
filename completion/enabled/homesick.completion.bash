@@ -1,0 +1,1 @@
+../available/homesick.completion.bash

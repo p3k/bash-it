@@ -1,0 +1,1 @@
+../available/maven.aliases.bash
