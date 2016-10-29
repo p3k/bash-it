@@ -2,7 +2,7 @@ cite about-plugin
 about-plugin 'initialize fasd (see https://github.com/clvv/fasd)'
 
 __init_fasd() {
-  which fasd &> /dev/null
+  command -v fasd &> /dev/null
   if [ $? -eq 1 ]; then
     echo -e "You must install fasd before you can use this plugin"
     echo -e "See: https://github.com/clvv/fasd"
@@ -24,6 +24,7 @@ __init_fasd() {
     # add bash hook
     case $PROMPT_COMMAND in
       *_fasd_prompt_func*) ;;
+      "") PROMPT_COMMAND="_fasd_prompt_func";;
       *) PROMPT_COMMAND="_fasd_prompt_func;$PROMPT_COMMAND";;
     esac
     eval "$(fasd --init bash-ccomp bash-ccomp-install)"

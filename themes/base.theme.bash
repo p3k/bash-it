@@ -16,8 +16,6 @@ SCM_THEME_BRANCH_GONE_PREFIX=' ⇢ '
 SCM_THEME_CURRENT_USER_PREFFIX=' ☺︎ '
 SCM_THEME_CURRENT_USER_SUFFIX=''
 
-CLOCK_CHAR='☆'
-THEME_CLOCK_CHECK=${THEME_CLOCK_CHECK:=true}
 THEME_BATTERY_PERCENTAGE_CHECK=${THEME_BATTERY_PERCENTAGE_CHECK:=true}
 
 SCM_GIT_SHOW_DETAILS=${SCM_GIT_SHOW_DETAILS:=true}
@@ -345,6 +343,28 @@ function git_user_info {
   [[ -n "${SCM_CURRENT_USER}" ]] && printf "%s" "$SCM_THEME_CURRENT_USER_PREFFIX$SCM_CURRENT_USER$SCM_THEME_CURRENT_USER_SUFFIX"
 }
 
+function clock_char {
+  CLOCK_CHAR=${THEME_CLOCK_CHAR:-"⌚"}
+  CLOCK_CHAR_COLOR=${THEME_CLOCK_CHAR_COLOR:-"$normal"}
+  SHOW_CLOCK_CHAR=${THEME_SHOW_CLOCK_CHAR:-"true"}
+
+  if [[ "${SHOW_CLOCK_CHAR}" = "true" ]]; then
+    echo -e "${CLOCK_CHAR_COLOR}${CLOCK_CHAR}"
+  fi
+}
+
+function clock_prompt {
+  CLOCK_COLOR=${THEME_CLOCK_COLOR:-"$normal"}
+  CLOCK_FORMAT=${THEME_CLOCK_FORMAT:-"%H:%M:%S"}
+  [ -z $THEME_SHOW_CLOCK ] && THEME_SHOW_CLOCK=${THEME_CLOCK_CHECK:-"true"}
+  SHOW_CLOCK=$THEME_SHOW_CLOCK
+
+  if [[ "${SHOW_CLOCK}" = "true" ]]; then
+    CLOCK_STRING=$(date +"${CLOCK_FORMAT}")
+    echo -e "${CLOCK_COLOR}${CLOCK_STRING}"
+  fi
+}
+
 # backwards-compatibility
 function git_prompt_info {
   git_prompt_vars
@@ -368,13 +388,6 @@ function scm_char {
 
 function prompt_char {
     scm_char
-}
-
-function clock_char {
-    if [[ "${THEME_CLOCK_CHECK}" = true ]]; then
-        DATE_STRING=$(date +"%Y-%m-%d %H:%M:%S")
-        echo -e "${bold_cyan}$DATE_STRING ${red}$CLOCK_CHAR"
-    fi
 }
 
 function battery_char {
@@ -402,4 +415,14 @@ function aws_profile {
   else
     echo -e "default"
   fi
+}
+
+function safe_append_prompt_command {
+    if [[ -n $1 ]] ; then
+        case $PROMPT_COMMAND in
+            *$1*) ;;
+            "") PROMPT_COMMAND="$1";;
+            *) PROMPT_COMMAND="$1;$PROMPT_COMMAND";;
+        esac
+    fi
 }
