@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
-# colored grep
-alias grep='grep --color=auto'
-export GREP_COLOR='1;33'
-
 # colored ls
 export LSCOLORS='Gxfxcxdxdxegedabagacad'
 
 if [[ -z "$CUSTOM_THEME_DIR" ]]; then
-    CUSTOM_THEME_DIR="${BASH_IT}/custom/themes"
+    CUSTOM_THEME_DIR="${BASH_IT_CUSTOM:=${BASH_IT}/custom}/themes"
 fi
 
 # Load the theme

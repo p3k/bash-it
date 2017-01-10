@@ -19,8 +19,12 @@ Bash-it provides a solid framework for using, developing and maintaining shell s
 The install script can take the following options:
 
 * `--interactive`: Asks the user which aliases, completions and plugins to enable.
+* `--silent`: Ask nothing and install using default settings.
+* `--no-modify-config`: Do not modify the existing config file (`~/.bash_profile` or `~/.bashrc`).
 
 When run without the `--interactive` switch, Bash-it only enables a sane default set of functionality to keep your shell clean and to avoid issues with missing dependencies. Feel free to enable the tools you want to use after the installation.
+
+When you run without the `--no-modify-config` switch, the Bash-it installer automatically modifies/replaces your existing config file. Use the `--no-modify-config` switch to avoid unwanted modifications, e.g. if your Bash config file already contains the code that loads Bash-it.
 
 **NOTE**: Keep in mind how Bash load its configuration files, `.bash_profile` for login shells (and in Mac OS X in terminal emulators like [Terminal.app](http://www.apple.com/osx/apps/) or [iTerm2](https://www.iterm2.com/)) and `.bashrc` for interactive shells (default mode in most of the GNU/Linux terminal emulators), to ensure that Bash-it is loaded correctly. A good "practice" is sourcing `.bashrc` into `.bash_profile` to keep things working in all the scenarios, to achieve this, you can add this snippet in your `.bash_profile`:
 
@@ -31,6 +35,17 @@ fi
 ```
 
 Refer to the official [Bash documention](https://www.gnu.org/software/bash/manual/bashref.html#Bash-Startup-Files) to get more info.
+
+
+## Install using Docker
+
+You can try Bash-it in an isolated enviroment without changing any local files via a [Docker](https://www.docker.com/) Container.  
+(Bash Shell v4.4 with Bash-it, [bats](https://github.com/sstephenson/bats) and bash-completion based on [Alpine Linux](https://alpinelinux.org/)).   
+
+`docker pull ellerbrock/bash-it`
+
+Have a look at our [bash-it-docker respository](https://github.com/Bash-it/bash-it-docker) for further information.
+
 
 ## Update
 
@@ -125,6 +140,8 @@ For custom scripts, and aliases, just create the following files (they'll be ign
 
 Anything in the custom directory will be ignored, with the exception of `custom/example.bash`.
 
+Alternately, if you would like to keep your custom scripts under version control, you can set BASH_IT_CUSTOM in your `~/.bashrc` to another location outside of the `~/.bash_it` folder.
+
 ## Themes
 
 There are a few Bash-it themes. If you've created your own custom prompts, I'd love it if you shared with everyone else! Just submit a Pull Request.
@@ -194,6 +211,8 @@ Set `SCM_GIT_SHOW_DETAILS` to 'false' to **don't show** it:
 
 * `export SCM_GIT_SHOW_DETAILS=false`
 
+**NOTE:** If using `SCM_GIT_SHOW_MINIMAL_INFO=true`, then the value of `SCM_GIT_SHOW_DETAILS` is ignored.
+
 #### Remotes and remote branches
 
 In some git workflows you must work with various remotes, for this reason, Bash-it can provide some useful information about your remotes and your remote branches, for example, the remote on you are working, or if your local branch is tracking a remote branch.
@@ -211,6 +230,8 @@ Set `SCM_GIT_SHOW_REMOTE_INFO` to 'true' to always activate the feature:
 Set `SCM_GIT_SHOW_REMOTE_INFO` to 'false' to **disable the feature**:
 
 * `export SCM_GIT_SHOW_REMOTE_INFO=false`
+
+**NOTE:** If using `SCM_GIT_SHOW_MINIMAL_INFO=true`, then the value of `SCM_GIT_SHOW_REMOTE_INFO` is ignored.
 
 #### Untracked files
 
@@ -243,6 +264,16 @@ You can control the prefix and the suffix of this component using the two variab
 And
 
 * `export SCM_THEME_CURRENT_USER_SUFFIX=' '``
+
+**NOTE:** If using `SCM_GIT_SHOW_MINIMAL_INFO=true`, then the value of `SCM_GIT_SHOW_CURRENT_USER` is ignored.
+
+#### Git show minimal status info
+
+To speed up the prompt while still getting minimal git status information displayed such as the value of HEAD and whether there are any dirty objects, you can set:
+
+```
+export SCM_GIT_SHOW_MINIMAL_INFO=true
+```
 
 #### Ignore repo status
 
