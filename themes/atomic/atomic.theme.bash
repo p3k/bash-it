@@ -164,7 +164,7 @@ ___atomic_prompt_clock() {
 }
 
 ___atomic_prompt_battery() {
-  ! command_exists battery_percentage ||
+  ! _command_exists battery_percentage ||
   [ "${THEME_SHOW_BATTERY}" != "true" ] ||
   [ "$(battery_percentage)" = "no" ] && return
 
@@ -177,8 +177,8 @@ ___atomic_prompt_battery() {
     color=$IRed
   fi
   box="[|]"
-  ac_adapter_disconnected && info="-"
   ac_adapter_connected && info="+"
+  ac_adapter_disconnected && info="-"
   info+=$batp
   [ "$batp" -eq 100 ] || [ "$batp" -gt 100 ] && info="AC"
   printf "%s|%s|%s|%s" "${color}" "${info}" "${bold_white}" "${box}"

@@ -7,7 +7,7 @@ function ips ()
     group 'base'
     if command -v ifconfig &>/dev/null
     then
-        ifconfig | awk '/inet /{ print $2 }'
+        ifconfig | awk '/inet /{ gsub(/addr:/, ""); print $2 }'
     elif command -v ip &>/dev/null
     then
         ip addr | grep -oP 'inet \K[\d.]+'
@@ -22,7 +22,7 @@ function down4me ()
     param '1: website url'
     example '$ down4me http://www.google.com'
     group 'base'
-    curl -s "http://www.downforeveryoneorjustme.com/$1" | sed '/just you/!d;s/<[^>]*>//g'
+    curl -Ls "http://downforeveryoneorjustme.com/$1" | sed '/just you/!d;s/<[^>]*>//g'
 }
 
 function myip ()
